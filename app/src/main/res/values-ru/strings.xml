@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DemoCompose</string>
+
+    <string name="login">Логин</string>
+    <string name="registration">Регистрация</string>
+    <string name="enter">Войти</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_in">Войти</string>
+    <string name="dont_have_account">Еще нет аккаунта?</string>
+    <string name="already_have_account">Уже есть аккаунт?</string>
+
+    <string name="enter_email">Введите email</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_name">Введите имю</string>
+    <string name="enter_surname">Введите фамилию</string>
+    <string name="enter_phone">Введите телефон</string>
+    <string name="confirm_password">Подтвердите пароль</string>
+    <string name="i_am_doctor">Я Доктор</string>
+    <string name="i_am_patient">Я Пациент</string>
+</resources>

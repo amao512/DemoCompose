@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">DemoCompose</string>
+
+    <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="enter">Enter</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="dont_have_account">"Don't have an account?"</string>
+    <string name="already_have_account">Already have an account?</string>
+
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="enter_name">Enter name</string>
+    <string name="enter_surname">Enter surname</string>
+    <string name="enter_phone">Enter phone</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="i_am_doctor">I am a Doctor</string>
+    <string name="i_am_patient">I am a Patient</string>
+</resources>
