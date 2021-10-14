@@ -6,9 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
 import com.aslnstbk.democompose.auth.domain.usecases.RegistrationUseCase
-import com.aslnstbk.democompose.global.states.RedirectActivityState
-import com.aslnstbk.democompose.global.constants.PackageActivityConstants
-import com.aslnstbk.democompose.global.states.ShowErrorState
+import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
+import com.aslnstbk.democompose.global.presentation.constants.PackageActivityConstants
+import com.aslnstbk.democompose.global.presentation.states.ShowErrorState
 
 class RegistrationViewModel(
     private val registrationUseCase: RegistrationUseCase

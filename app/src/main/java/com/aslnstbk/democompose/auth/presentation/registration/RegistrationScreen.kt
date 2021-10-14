@@ -23,10 +23,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.aslnstbk.democompose.R
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
-import com.aslnstbk.democompose.global.states.RedirectActivityState
-import com.aslnstbk.democompose.global.states.ShowErrorState
-import com.aslnstbk.democompose.global.ui.components.EditText
-import com.aslnstbk.democompose.presentation.ui.theme.DemoComposeTheme
+import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
+import com.aslnstbk.democompose.global.presentation.states.ShowErrorState
+import com.aslnstbk.democompose.global.presentation.ui.components.EditText
+import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 import org.koin.androidx.compose.get
 
 @Composable

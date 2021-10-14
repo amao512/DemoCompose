@@ -13,9 +13,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aslnstbk.democompose.auth.presentation.login.LoginScreen
 import com.aslnstbk.democompose.auth.presentation.registration.RegistrationScreen
-import com.aslnstbk.democompose.global.states.RedirectActivityState
-import com.aslnstbk.democompose.global.utils.showModuleActivity
-import com.aslnstbk.democompose.presentation.ui.theme.DemoComposeTheme
+import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
+import com.aslnstbk.democompose.global.presentation.utils.showModuleActivity
+import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 
 class AuthActivity : ComponentActivity() {
 
