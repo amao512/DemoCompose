@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
 import com.aslnstbk.democompose.auth.domain.usecases.RegistrationUseCase
 import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
-import com.aslnstbk.democompose.global.presentation.constants.PackageActivityConstants
+import com.aslnstbk.democompose.global.presentation.utils.constants.PackageActivityConstants
 import com.aslnstbk.democompose.global.presentation.states.ShowErrorState
 
 class RegistrationViewModel(

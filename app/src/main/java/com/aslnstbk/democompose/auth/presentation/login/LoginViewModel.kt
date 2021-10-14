@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.democompose.auth.domain.usecases.LoginUseCase
 import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
-import com.aslnstbk.democompose.global.presentation.constants.PackageActivityConstants
+import com.aslnstbk.democompose.global.presentation.utils.constants.PackageActivityConstants
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase
