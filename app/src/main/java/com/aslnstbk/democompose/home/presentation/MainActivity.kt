@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.aslnstbk.democompose.global.presentation.navigation.NavigationItem
 import com.aslnstbk.democompose.global.presentation.ui.components.BottomNavigationBar
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
+import com.aslnstbk.democompose.profile.presentation.ProfileScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,7 @@ fun MainActivityView() {
     ) {
         NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
             composable(route = NavigationItem.Home.route) { HomeScreen() }
+            composable(route = NavigationItem.Profile.route) { ProfileScreen() }
         }
     }
 }

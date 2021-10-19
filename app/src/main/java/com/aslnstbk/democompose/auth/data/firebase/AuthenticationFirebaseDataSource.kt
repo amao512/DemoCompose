@@ -2,7 +2,7 @@ package com.aslnstbk.democompose.auth.data.firebase
 
 import android.util.Log
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
-import com.aslnstbk.democompose.auth.data.models.UserDTO
+import com.aslnstbk.democompose.profile.data.models.UserDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -24,11 +24,13 @@ class AuthenticationFirebaseDataSource(
 
                     onSuccess(
                         UserDTO(
-                            id = user?.uid,
-                            displayName = user?.displayName,
-                            email = user?.email,
-                            phoneNumber = user?.phoneNumber,
-                            photoUrl = user?.photoUrl.toString()
+                            id = user?.uid.orEmpty(),
+                            name = user?.displayName.orEmpty(),
+                            surname = user?.displayName.orEmpty(),
+                            email = user?.email.orEmpty(),
+                            phoneNumber = user?.phoneNumber.orEmpty(),
+                            photoUrl = user?.photoUrl.toString(),
+                            isDoctor = false
                         )
                     )
                 } else {
@@ -46,16 +48,18 @@ class AuthenticationFirebaseDataSource(
         auth.createUserWithEmailAndPassword(param.email, param.password)
             .addOnSuccessListener {
                 val user = UserDTO(
-                    id = auth.currentUser?.uid,
-                    displayName = auth.currentUser?.displayName,
-                    email = auth.currentUser?.email,
-                    phoneNumber = auth.currentUser?.phoneNumber,
-                    photoUrl = auth.currentUser?.photoUrl.toString()
+                    id = auth.currentUser?.uid.orEmpty(),
+                    name = param.name,
+                    surname = param.surname,
+                    email = auth.currentUser?.email.orEmpty(),
+                    phoneNumber = auth.currentUser?.phoneNumber.orEmpty(),
+                    photoUrl = auth.currentUser?.photoUrl.toString(),
+                    isDoctor = param.isDoctor
                 )
 
                 database.getReference(DatabaseConstants.USERS)
-                    .child(user.id.orEmpty())
-                    .setValue(param.apply { password = "" })
+                    .child(user.id)
+                    .setValue(user)
                     .addOnSuccessListener {
                         onSuccess(user)
                     }

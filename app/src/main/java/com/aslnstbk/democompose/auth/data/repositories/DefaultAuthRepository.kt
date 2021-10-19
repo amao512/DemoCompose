@@ -2,8 +2,8 @@ package com.aslnstbk.democompose.auth.data.repositories
 
 import com.aslnstbk.democompose.auth.data.firebase.AuthenticationFirebaseDataSource
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
-import com.aslnstbk.democompose.auth.data.models.UserDTO
 import com.aslnstbk.democompose.auth.domain.repositories.AuthRepository
+import com.aslnstbk.democompose.profile.data.models.UserDTO
 
 class DefaultAuthRepository(
     private val authenticationFirebaseDataSource: AuthenticationFirebaseDataSource

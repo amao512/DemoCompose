@@ -2,25 +2,28 @@ package com.aslnstbk.democompose.global.presentation.launcher
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.aslnstbk.democompose.auth.presentation.AuthActivity
 import com.aslnstbk.democompose.home.presentation.MainActivity
-import com.google.firebase.auth.FirebaseUser
-import org.koin.android.ext.android.inject
+import com.google.firebase.auth.FirebaseAuth
 
-class LauncherActivity : ComponentActivity() {
-
-    private val currentUser: FirebaseUser by inject()
+class LauncherActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val user = FirebaseAuth.getInstance().currentUser
 
-        val intent = if (currentUser.uid.isNotBlank()) {
-            Intent(this, MainActivity::class.java)
-        } else {
-            Intent(this, AuthActivity::class.java)
+        user?.let {
+            val intent = if (it.uid.isNotBlank()) {
+                Intent(this, MainActivity::class.java)
+            } else {
+                Intent(this, AuthActivity::class.java)
+            }
+
+            startActivity(intent)
+        } ?: run {
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
         }
-
-        startActivity(intent)
     }
 }

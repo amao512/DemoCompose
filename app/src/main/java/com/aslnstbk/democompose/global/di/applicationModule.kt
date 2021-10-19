@@ -6,11 +6,11 @@ import org.koin.dsl.module
 
 val applicationModule = module {
 
-    single {
+    factory {
         FirebaseDatabase.getInstance()
     }
 
-    single {
+    factory {
         val auth: FirebaseAuth = get()
 
         auth.currentUser

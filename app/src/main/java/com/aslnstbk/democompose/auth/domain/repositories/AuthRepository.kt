@@ -1,7 +1,7 @@
 package com.aslnstbk.democompose.auth.domain.repositories
 
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
-import com.aslnstbk.democompose.auth.data.models.UserDTO
+import com.aslnstbk.democompose.profile.data.models.UserDTO
 
 interface AuthRepository {
 
