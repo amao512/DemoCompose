@@ -17,4 +17,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="i_am_doctor">I am a Doctor</string>
     <string name="i_am_patient">I am a Patient</string>
+
+    <string name="profile">Profile</string>
 </resources>
