@@ -26,10 +26,13 @@ import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 import com.aslnstbk.democompose.profile.domain.models.User
 
 @Composable
-fun UserCard(user: User) {
+fun UserCard(
+    user: User,
+    onClick: () -> Unit
+) {
     Card(
         elevation = 1.dp,
-        modifier = Modifier.fillMaxWidth().clickable {},
+        modifier = Modifier.fillMaxWidth().clickable { onClick() },
         backgroundColor = MaterialTheme.colors.primary,
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -61,6 +64,9 @@ fun UserCard(user: User) {
 @Composable
 private fun UserCardPreview() {
     DemoComposeTheme(darkTheme = true) {
-        UserCard(user = User(name = "User"))
+        UserCard(
+            user = User(name = "User"),
+            onClick = {}
+        )
     }
 }

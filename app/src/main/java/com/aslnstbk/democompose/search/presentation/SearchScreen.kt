@@ -21,6 +21,7 @@ import com.aslnstbk.democompose.R
 import com.aslnstbk.democompose.global.data.ResponseData
 import com.aslnstbk.democompose.global.presentation.ui.components.EditText
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
+import com.aslnstbk.democompose.global.presentation.utils.toLowerCase
 import com.aslnstbk.democompose.search.presentation.ui.components.UserCard
 import org.koin.androidx.compose.get
 
@@ -33,7 +34,10 @@ fun SearchScreen(viewModel: SearchViewModel = get()) {
     Column(modifier = Modifier.fillMaxSize()) {
         EditText(
             value = inputValue.value,
-            onValueChanged = { inputValue.value = it },
+            onValueChanged = {
+                inputValue.value = it
+                viewModel.onSearch(query = inputValue.value.text.toLowerCase())
+            },
             placeholder = stringResource(id = R.string.search),
             backgroundColor = MaterialTheme.colors.primary
         )
@@ -44,7 +48,10 @@ fun SearchScreen(viewModel: SearchViewModel = get()) {
                     modifier = Modifier.padding(horizontal = 16.dp)
                 ) {
                     items(items = allUsers.data) {
-                        UserCard(user = it)
+                        UserCard(
+                            user = it,
+                            onClick = {}
+                        )
                         Divider(
                             modifier = Modifier.padding(6.dp),
                             thickness = 0.dp
