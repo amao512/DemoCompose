@@ -1,6 +1,6 @@
 package com.aslnstbk.democompose.profile.data.firebase
 
-import com.aslnstbk.democompose.auth.data.firebase.DatabaseConstants
+import com.aslnstbk.democompose.global.data.firebase.DatabaseConstants
 import com.aslnstbk.democompose.profile.data.models.UserDTO
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

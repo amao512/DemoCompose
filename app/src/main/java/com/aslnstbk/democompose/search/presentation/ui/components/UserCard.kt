@@ -1,11 +1,15 @@
-package com.aslnstbk.democompose.profile.presentation.ui.components
+package com.aslnstbk.democompose.search.presentation.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,24 +26,23 @@ import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 import com.aslnstbk.democompose.profile.domain.models.User
 
 @Composable
-fun ProfileCard(user: User) {
-    Box(
-        modifier = Modifier.background(
-            color = MaterialTheme.colors.primary,
-            shape = RoundedCornerShape(10.dp)
-        ).fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+fun UserCard(user: User) {
+    Card(
+        elevation = 1.dp,
+        modifier = Modifier.fillMaxWidth().clickable {},
+        backgroundColor = MaterialTheme.colors.primary,
+        shape = RoundedCornerShape(16.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp)
         ) {
             Image(
                 painter = rememberImagePainter("https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg"),
                 contentDescription = user.email,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(36.dp)
                     .clip(CircleShape)
                     .border(1.dp, MaterialTheme.colors.secondaryVariant, CircleShape)
             )
@@ -56,10 +59,8 @@ fun ProfileCard(user: User) {
 
 @Preview(showBackground = true)
 @Composable
-private fun ProfileCardPreview() {
+private fun UserCardPreview() {
     DemoComposeTheme(darkTheme = true) {
-        ProfileCard(
-            user = User(name = "User", surname = "Surname")
-        )
+        UserCard(user = User(name = "User"))
     }
 }

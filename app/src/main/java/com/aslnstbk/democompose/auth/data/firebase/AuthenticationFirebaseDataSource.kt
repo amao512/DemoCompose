@@ -2,6 +2,7 @@ package com.aslnstbk.democompose.auth.data.firebase
 
 import android.util.Log
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
+import com.aslnstbk.democompose.global.data.firebase.DatabaseConstants
 import com.aslnstbk.democompose.profile.data.models.UserDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase

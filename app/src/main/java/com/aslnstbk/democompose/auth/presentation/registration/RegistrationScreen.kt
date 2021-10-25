@@ -135,15 +135,13 @@ private fun RegistrationContent(
                 EditText(
                     value = nameInputValue.value,
                     onValueChanged = { nameInputValue.value = it },
-                    placeholder = stringResource(id = R.string.enter_name),
-                    keyboardType = KeyboardType.Text
+                    placeholder = stringResource(id = R.string.enter_name)
                 )
 
                 EditText(
                     value = surnameInputValue.value,
                     onValueChanged = { surnameInputValue.value = it },
-                    placeholder = stringResource(id = R.string.enter_surname),
-                    keyboardType = KeyboardType.Text
+                    placeholder = stringResource(id = R.string.enter_surname)
                 )
 
                 EditText(

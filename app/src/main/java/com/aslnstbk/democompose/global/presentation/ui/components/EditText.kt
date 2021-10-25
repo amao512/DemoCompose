@@ -26,7 +26,8 @@ fun EditText(
     value: TextFieldValue,
     onValueChanged: (TextFieldValue) -> Unit,
     placeholder: String,
-    keyboardType: KeyboardType
+    keyboardType: KeyboardType = KeyboardType.Text,
+    backgroundColor: Color = MaterialTheme.colors.primaryVariant
 ) {
     TextField(
         value = value,
@@ -43,8 +44,7 @@ fun EditText(
                     color = MaterialTheme.colors.secondaryVariant
                 ),
                 shape = RoundedCornerShape(16.dp)
-            )
-            .background(color = MaterialTheme.colors.primaryVariant),
+            ),
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.None,
             autoCorrect = true,
@@ -56,7 +56,7 @@ fun EditText(
         colors = TextFieldDefaults.textFieldColors(
             textColor = MaterialTheme.colors.secondaryVariant,
             disabledTextColor = Color.Transparent,
-            backgroundColor = MaterialTheme.colors.primaryVariant,
+            backgroundColor = backgroundColor,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent
@@ -71,8 +71,7 @@ fun EditTextPreview() {
         EditText(
             value = TextFieldValue(),
             onValueChanged = {},
-            placeholder = "Enter",
-            keyboardType = KeyboardType.Text
+            placeholder = "Enter"
         )
     }
 }

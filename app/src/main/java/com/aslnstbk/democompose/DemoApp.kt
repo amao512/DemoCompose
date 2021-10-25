@@ -3,7 +3,9 @@ package com.aslnstbk.democompose
 import android.app.Application
 import com.aslnstbk.democompose.auth.di.authModule
 import com.aslnstbk.democompose.global.di.applicationModule
+import com.aslnstbk.democompose.home.di.homeModule
 import com.aslnstbk.democompose.profile.di.profileModule
+import com.aslnstbk.democompose.search.di.searchModule
 import org.koin.core.context.startKoin
 
 class DemoApp : Application() {
@@ -15,7 +17,9 @@ class DemoApp : Application() {
             modules(
                 applicationModule,
                 authModule,
-                profileModule
+                profileModule,
+                homeModule,
+                searchModule
             )
         }
     }

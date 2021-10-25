@@ -1,8 +1,7 @@
 package com.aslnstbk.democompose.profile.presentation
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.democompose.global.data.ResponseData
 import com.aslnstbk.democompose.profile.domain.models.User
@@ -14,8 +13,8 @@ class ProfileViewModel(
     private val getProfileUseCase: GetProfileUseCase
 ) : ViewModel() {
 
-    private val _profileState: MutableState<ResponseData<User, String>> = mutableStateOf(ResponseData.Success(User()))
-    val profileState: State<ResponseData<User, String>> get() = _profileState
+    private val _profileState: MutableLiveData<ResponseData<User, String>> = MutableLiveData()
+    val profileState: LiveData<ResponseData<User, String>> get() = _profileState
 
     init {
         getProfile()
