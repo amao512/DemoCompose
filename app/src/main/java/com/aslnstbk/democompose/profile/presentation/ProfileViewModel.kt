@@ -16,13 +16,9 @@ class ProfileViewModel(
     private val _profileState: MutableLiveData<ResponseData<User, String>> = MutableLiveData()
     val profileState: LiveData<ResponseData<User, String>> get() = _profileState
 
-    init {
-        getProfile()
-    }
-
-    private fun getProfile() {
+    fun getProfile(uid: String?) {
         getProfileUseCase(
-            uid = firebaseUser.uid,
+            uid = uid ?: firebaseUser.uid,
             onResponse = {
                 _profileState.value = it
             }

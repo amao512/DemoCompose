@@ -15,6 +15,9 @@ fun mainFlow(
     NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
         composable(route = NavigationItem.Home.route) { HomeScreen(navController) }
         composable(route = NavigationItem.Profile.route) { ProfileScreen() }
-        composable(route = NavigationItem.Search.route) { SearchScreen() }
+        composable(route = NavigationItem.Profile.route.plus("{id}")) {
+            ProfileScreen(profileId = it.arguments?.getString("id"))
+        }
+        composable(route = NavigationItem.Search.route) { SearchScreen(navController) }
     }
 }

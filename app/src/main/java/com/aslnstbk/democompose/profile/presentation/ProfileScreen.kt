@@ -15,7 +15,12 @@ import com.aslnstbk.democompose.profile.presentation.ui.components.ProfileCard
 import org.koin.androidx.compose.get
 
 @Composable
-fun ProfileScreen(viewModel: ProfileViewModel = get()) {
+fun ProfileScreen(
+    profileId: String? = null,
+    viewModel: ProfileViewModel = get()
+) {
+    viewModel.getProfile(profileId)
+
     val state = viewModel.profileState.observeAsState().value
 
     Column(

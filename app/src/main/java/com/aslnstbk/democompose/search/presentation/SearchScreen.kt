@@ -17,8 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.aslnstbk.democompose.R
 import com.aslnstbk.democompose.global.data.ResponseData
+import com.aslnstbk.democompose.global.presentation.navigation.NavigationItem
 import com.aslnstbk.democompose.global.presentation.ui.components.EditText
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 import com.aslnstbk.democompose.global.presentation.utils.toLowerCase
@@ -26,7 +29,10 @@ import com.aslnstbk.democompose.search.presentation.ui.components.UserCard
 import org.koin.androidx.compose.get
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = get()) {
+fun SearchScreen(
+    navController: NavController,
+    viewModel: SearchViewModel = get()
+) {
 
     val allUsers = viewModel.allUsers.observeAsState().value
     val inputValue = remember { mutableStateOf(TextFieldValue()) }
@@ -50,7 +56,11 @@ fun SearchScreen(viewModel: SearchViewModel = get()) {
                     items(items = allUsers.data) {
                         UserCard(
                             user = it,
-                            onClick = {}
+                            onClick = {
+                                navController.navigate(
+                                    NavigationItem.Profile.route.plus(it.id)
+                                )
+                            }
                         )
                         Divider(
                             modifier = Modifier.padding(6.dp),
@@ -70,6 +80,6 @@ fun SearchScreen(viewModel: SearchViewModel = get()) {
 @Composable
 private fun SearchScreenPreview() {
     DemoComposeTheme(darkTheme = true) {
-        SearchScreen()
+        SearchScreen(rememberNavController())
     }
 }
