@@ -10,28 +10,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aslnstbk.democompose.global.data.ResponseData
+import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 import com.aslnstbk.democompose.profile.domain.models.User
 import com.aslnstbk.democompose.profile.presentation.models.ProfileAction
 import com.aslnstbk.democompose.profile.presentation.ui.components.ProfileCard
 import org.koin.androidx.compose.get
+import com.aslnstbk.democompose.R
 
 @Composable
 fun ProfileScreen(
     profileId: String? = null,
-    viewModel: ProfileViewModel = get()
+    viewModel: ProfileViewModel = get(),
+    redirectToActivity: (RedirectActivityState) -> Unit
 ) {
     viewModel.obtainEvent(event = ProfileAction.GetProfile(uid = profileId))
 
     val state = viewModel.profileState.observeAsState().value
     val isOwnProfile = viewModel.isOwnProfile.observeAsState().value
-    val signOut = viewModel.signOut.observeAsState().value
+    val redirectToActivityState = viewModel.redirectToActivity.observeAsState().value
+
+    redirectToActivityState?.let {
+        if (it.isRedirect && it.activity.isNotBlank()) {
+            redirectToActivity(it)
+        }
+    }
 
     Column(
-        modifier = Modifier.padding(16.dp).fillMaxSize()
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxSize()
     ) {
         when (state) {
             is ResponseData.Success -> {
@@ -48,7 +60,8 @@ fun ProfileScreen(
                     }
                 )
             }
-            is ResponseData.Error -> {}
+            is ResponseData.Error -> {
+            }
         }
     }
 }
@@ -82,14 +95,14 @@ private fun ProfileScreenContent(
                 )
             ) {
                 Text(
-                    text = "Add",
+                    text = stringResource(id = R.string.add),
                     color = Color.White
                 )
             }
         }
     } else {
         Button(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             onClick = onExitClick,
             shape = RoundedCornerShape(10.dp),
             colors = ButtonDefaults.buttonColors(
@@ -97,7 +110,7 @@ private fun ProfileScreenContent(
             )
         ) {
             Text(
-                text = "Exit",
+                text = stringResource(id = R.string.exit),
                 color = Color.White
             )
         }
@@ -108,6 +121,6 @@ private fun ProfileScreenContent(
 @Composable
 private fun ProfileScreenPreview() {
     DemoComposeTheme(darkTheme = true) {
-        ProfileScreen()
+        ProfileScreen(redirectToActivity = {})
     }
 }

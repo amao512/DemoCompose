@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.aslnstbk.democompose.global.data.EventHandler
 import com.aslnstbk.democompose.global.data.ResponseData
+import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
+import com.aslnstbk.democompose.global.presentation.utils.constants.PackageActivityConstants
 import com.aslnstbk.democompose.profile.domain.models.User
 import com.aslnstbk.democompose.profile.domain.usecases.AddUserUseCase
 import com.aslnstbk.democompose.profile.domain.usecases.GetProfileUseCase
@@ -26,8 +28,8 @@ class ProfileViewModel(
     private val _isOwnProfile: MutableLiveData<Boolean> = MutableLiveData()
     val isOwnProfile: LiveData<Boolean> get() = _isOwnProfile
 
-    private val _signOut: MutableLiveData<Boolean> = MutableLiveData()
-    val signOut: LiveData<Boolean> get() = _signOut
+    private val _redirectToActivity: MutableLiveData<RedirectActivityState> = MutableLiveData()
+    val redirectToActivity: LiveData<RedirectActivityState> get() = _redirectToActivity
 
     override fun obtainEvent(event: ProfileAction) {
         when (event) {
@@ -62,7 +64,12 @@ class ProfileViewModel(
     private fun signOut() {
         signOutUseCase {
             when (it) {
-                is ResponseData.Success -> _signOut.value = true
+                is ResponseData.Success -> {
+                    _redirectToActivity.value = RedirectActivityState(
+                        isRedirect = true,
+                        activity = PackageActivityConstants.PKG_AUTH_ACTIVITY
+                    )
+                }
                 is ResponseData.Error -> {}
             }
         }
