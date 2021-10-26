@@ -1,4 +1,4 @@
-package com.aslnstbk.democompose.profile.presentation
+package com.aslnstbk.democompose.profile.presentation.models
 
 import com.aslnstbk.democompose.profile.domain.models.User
 

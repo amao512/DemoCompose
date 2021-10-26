@@ -2,15 +2,20 @@ package com.aslnstbk.democompose.profile.presentation
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.aslnstbk.democompose.global.data.ResponseData
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
 import com.aslnstbk.democompose.profile.domain.models.User
+import com.aslnstbk.democompose.profile.presentation.models.ProfileAction
 import com.aslnstbk.democompose.profile.presentation.ui.components.ProfileCard
 import org.koin.androidx.compose.get
 
@@ -19,18 +24,29 @@ fun ProfileScreen(
     profileId: String? = null,
     viewModel: ProfileViewModel = get()
 ) {
-    viewModel.getProfile(profileId)
+    viewModel.obtainEvent(event = ProfileAction.GetProfile(uid = profileId))
 
     val state = viewModel.profileState.observeAsState().value
+    val isOwnProfile = viewModel.isOwnProfile.observeAsState().value
+    val signOut = viewModel.signOut.observeAsState().value
 
     Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxSize()
+        modifier = Modifier.padding(16.dp).fillMaxSize()
     ) {
         when (state) {
             is ResponseData.Success -> {
-                ProfileScreenContent(user = state.data)
+                ProfileScreenContent(
+                    user = state.data,
+                    isOwnProfile = isOwnProfile ?: true,
+                    onAddClick = {
+                        viewModel.obtainEvent(
+                            event = ProfileAction.AddUser(uid = state.data.id)
+                        )
+                    },
+                    onExitClick = {
+                        viewModel.obtainEvent(event = ProfileAction.Exit)
+                    }
+                )
             }
             is ResponseData.Error -> {}
         }
@@ -38,8 +54,54 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileScreenContent(user: User) {
+private fun ProfileScreenContent(
+    user: User,
+    isOwnProfile: Boolean,
+    onAddClick: () -> Unit,
+    onExitClick: () -> Unit
+) {
     ProfileCard(user = user)
+    Divider(
+        thickness = 0.dp,
+        modifier = Modifier.padding(10.dp)
+    )
+
+    if (!isOwnProfile) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            elevation = 1.dp,
+            shape = RoundedCornerShape(10.dp),
+            backgroundColor = MaterialTheme.colors.primary
+        ) {
+            Button(
+                modifier = Modifier.padding(16.dp),
+                onClick = onAddClick,
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = MaterialTheme.colors.secondaryVariant
+                )
+            ) {
+                Text(
+                    text = "Add",
+                    color = Color.White
+                )
+            }
+        }
+    } else {
+        Button(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            onClick = onExitClick,
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color.Red
+            )
+        ) {
+            Text(
+                text = "Exit",
+                color = Color.White
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)

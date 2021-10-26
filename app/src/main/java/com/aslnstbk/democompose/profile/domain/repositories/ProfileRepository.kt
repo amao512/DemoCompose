@@ -9,4 +9,15 @@ interface ProfileRepository {
         onSuccess: (UserDTO) -> Unit,
         onFailure: (String) -> Unit
     )
+
+    fun addUser(
+        userId: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    )
+
+    fun onExit(
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    )
 }

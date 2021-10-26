@@ -16,4 +16,19 @@ class DefaultProfileRepository(
         dataSource.getUserByUid(uid, onSuccess, onFailure
         )
     }
+
+    override fun addUser(
+        userId: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        dataSource.addUser(userId, onSuccess, onFailure)
+    }
+
+    override fun onExit(
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        dataSource.signOut(onSuccess, onFailure)
+    }
 }

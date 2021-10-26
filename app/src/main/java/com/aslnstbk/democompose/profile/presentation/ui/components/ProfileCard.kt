@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,33 +24,38 @@ import com.aslnstbk.democompose.profile.domain.models.User
 
 @Composable
 fun ProfileCard(user: User) {
-    Box(
-        modifier = Modifier.background(
-            color = MaterialTheme.colors.primary,
-            shape = RoundedCornerShape(10.dp)
-        ).fillMaxWidth()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        elevation = 1.dp,
+        shape = RoundedCornerShape(10.dp),
+        backgroundColor = MaterialTheme.colors.primary
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = rememberImagePainter("https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg"),
-                contentDescription = user.email,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape)
-                    .border(1.dp, MaterialTheme.colors.secondaryVariant, CircleShape)
-            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = rememberImagePainter("https://www.pixsy.com/wp-content/uploads/2021/04/ben-sweet-2LowviVHZ-E-unsplash-1.jpeg"),
+                    contentDescription = user.email,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .border(1.dp, MaterialTheme.colors.secondaryVariant, CircleShape)
+                )
 
-            Text(
-                text = user.displayName,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.padding(10.dp)
-            )
+                Text(
+                    text = user.displayName,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(10.dp)
+                )
+            }
         }
     }
 }
