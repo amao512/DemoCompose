@@ -8,14 +8,10 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aslnstbk.democompose.auth.presentation.login.LoginScreen
-import com.aslnstbk.democompose.auth.presentation.registration.RegistrationScreen
 import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
-import com.aslnstbk.democompose.global.presentation.utils.showModuleActivity
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
+import com.aslnstbk.democompose.global.presentation.utils.showModuleActivity
 
 class AuthActivity : ComponentActivity() {
 
@@ -42,14 +38,10 @@ fun AuthScreen(redirectToActivity: (RedirectActivityState) -> Unit) {
     val navController = rememberNavController()
 
     Scaffold {
-        NavHost(navController = navController, startDestination = AuthNavRoute.Login.route) {
-            composable(route = AuthNavRoute.Login.route) {
-                LoginScreen(navController, redirectToActivity)
-            }
-            composable(route = AuthNavRoute.Registration.route) {
-                RegistrationScreen(navController, redirectToActivity)
-            }
-        }
+        authNavFlow(
+            navController = navController,
+            redirectToActivity = redirectToActivity
+        )
     }
 }
 

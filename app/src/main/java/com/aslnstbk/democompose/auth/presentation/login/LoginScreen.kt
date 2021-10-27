@@ -9,6 +9,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,6 +27,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.aslnstbk.democompose.R
 import com.aslnstbk.democompose.auth.presentation.AuthNavRoute
+import com.aslnstbk.democompose.auth.presentation.login.models.LoginAction
 import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
 import com.aslnstbk.democompose.global.presentation.ui.components.EditText
 import com.aslnstbk.democompose.global.presentation.ui.theme.DemoComposeTheme
@@ -37,13 +39,15 @@ fun LoginScreen(
     redirectToActivity: (RedirectActivityState) -> Unit,
     viewModel: LoginViewModel = get()
 ) {
-    val redirectToActivityState = viewModel.redirectToActivity.value
+    val redirectToActivityState = viewModel.redirectToActivity.observeAsState().value
 
     val emailInputValue = remember { mutableStateOf(TextFieldValue()) }
     val passwordInputValue = remember { mutableStateOf(TextFieldValue()) }
 
-    if (redirectToActivityState.isRedirect && redirectToActivityState.activity.isNotBlank()) {
-        redirectToActivity(redirectToActivityState)
+    redirectToActivityState?.let {
+        if (it.isRedirect && it.activity.isNotBlank()) {
+            redirectToActivity(it)
+        }
     }
 
     LoginContent(
@@ -52,10 +56,10 @@ fun LoginScreen(
         passwordValue = passwordInputValue.value,
         setPasswordValue = { passwordInputValue.value = it },
         onSignIn = {
-           viewModel.onSignIn(
-               email = emailInputValue.value.text,
-               password = passwordInputValue.value.text
-           )
+            viewModel.obtainEvent(event = LoginAction.SignIn(
+                email = emailInputValue.value.text,
+                password = passwordInputValue.value.text
+            ))
         },
         onRegistrationClick = {
             navController.navigate(AuthNavRoute.Registration.route)

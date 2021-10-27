@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,6 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.aslnstbk.democompose.R
 import com.aslnstbk.democompose.auth.data.models.RegistrationParam
+import com.aslnstbk.democompose.auth.presentation.registration.models.RegistrationAction
 import com.aslnstbk.democompose.global.presentation.states.RedirectActivityState
 import com.aslnstbk.democompose.global.presentation.states.ShowErrorState
 import com.aslnstbk.democompose.global.presentation.ui.components.EditText
@@ -35,8 +37,8 @@ fun RegistrationScreen(
     redirectToActivity: (RedirectActivityState) -> Unit,
     viewModel: RegistrationViewModel = get()
 ) {
-    val redirectToActivityState = viewModel.redirectActivityState.value
-    val errorState = viewModel.showErrorState.value
+    val redirectToActivityState = viewModel.redirectActivityState.observeAsState().value
+    val errorState = viewModel.showErrorState.observeAsState().value
 
     val nameInputValue = remember { mutableStateOf(TextFieldValue()) }
     val surnameInputValue = remember { mutableStateOf(TextFieldValue()) }
@@ -53,8 +55,10 @@ fun RegistrationScreen(
         targetValue = if (!isDoctor.value) MaterialTheme.colors.secondaryVariant else Color.Gray
     )
 
-    if (redirectToActivityState.isRedirect && redirectToActivityState.activity.isNotBlank()) {
-        redirectToActivity(redirectToActivityState)
+    redirectToActivityState?.let {
+        if (it.isRedirect && it.activity.isNotBlank()) {
+            redirectToActivity(it)
+        }
     }
 
     RegistrationContent(
@@ -71,14 +75,18 @@ fun RegistrationScreen(
             navController.popBackStack()
         },
         onRegisterClick = {
-            viewModel.onRegister(param = RegistrationParam(
-                email = emailInputValue.value.text,
-                password = passwordInputValue.value.text,
-                name = nameInputValue.value.text,
-                surname = surnameInputValue.value.text,
-                phoneNumber = phoneInputValue.value.text,
-                isDoctor = isDoctor.value
-            ))
+            viewModel.obtainEvent(
+                event = RegistrationAction.OnRegister(
+                    param = RegistrationParam(
+                        email = emailInputValue.value.text,
+                        password = passwordInputValue.value.text,
+                        name = nameInputValue.value.text,
+                        surname = surnameInputValue.value.text,
+                        phoneNumber = phoneInputValue.value.text,
+                        isDoctor = isDoctor.value
+                    )
+                )
+            )
         },
         errorState = errorState
     )
@@ -97,12 +105,13 @@ private fun RegistrationContent(
     patientButtonColor: State<Color>,
     popBackStack: () -> Unit,
     onRegisterClick: () -> Unit,
-    errorState: ShowErrorState
+    errorState: ShowErrorState?
 ) {
-    val isButtonEnabled = (nameInputValue.value.text.isNotBlank() && surnameInputValue.value.text.isNotBlank()
-                        && phoneInputValue.value.text.isNotBlank() && emailInputValue.value.text.isNotBlank()
-                        && passwordInputValue.value.text.isNotBlank() && confirmPasswordInputValue.value.text.isNotBlank())
-                        && passwordInputValue.value.text == confirmPasswordInputValue.value.text
+    val isButtonEnabled =
+        (nameInputValue.value.text.isNotBlank() && surnameInputValue.value.text.isNotBlank()
+                && phoneInputValue.value.text.isNotBlank() && emailInputValue.value.text.isNotBlank()
+                && passwordInputValue.value.text.isNotBlank() && confirmPasswordInputValue.value.text.isNotBlank())
+                && passwordInputValue.value.text == confirmPasswordInputValue.value.text
 
     Box(
         modifier = Modifier
@@ -237,7 +246,10 @@ private fun RegistrationContent(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = stringResource(id = R.string.already_have_account), color = Color.Gray)
+                    Text(
+                        text = stringResource(id = R.string.already_have_account),
+                        color = Color.Gray
+                    )
                     Text(
                         text = stringResource(id = R.string.sign_in),
                         color = MaterialTheme.colors.secondaryVariant,
@@ -249,20 +261,22 @@ private fun RegistrationContent(
             }
         }
 
-        if (errorState.error.isNotBlank()) {
-            Box(modifier = Modifier.padding(16.dp)) {
-                Snackbar(snackbarData = object : SnackbarData {
-                    override val actionLabel: String?
-                        get() = null
-                    override val duration: SnackbarDuration
-                        get() = SnackbarDuration.Short
-                    override val message: String
-                        get() = errorState.error
+        errorState?.let {
+            if (it.error.isNotBlank()) {
+                Box(modifier = Modifier.padding(16.dp)) {
+                    Snackbar(snackbarData = object : SnackbarData {
+                        override val actionLabel: String?
+                            get() = null
+                        override val duration: SnackbarDuration
+                            get() = SnackbarDuration.Short
+                        override val message: String
+                            get() = it.error
 
-                    override fun dismiss() {}
+                        override fun dismiss() {}
 
-                    override fun performAction() {}
-                })
+                        override fun performAction() {}
+                    })
+                }
             }
         }
     }
