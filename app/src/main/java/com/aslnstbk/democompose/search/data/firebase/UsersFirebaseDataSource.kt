@@ -1,6 +1,7 @@
 package com.aslnstbk.democompose.search.data.firebase
 
 import com.aslnstbk.democompose.global.data.firebase.DatabaseConstants
+import com.aslnstbk.democompose.global.presentation.utils.toUserDTO
 import com.aslnstbk.democompose.profile.data.models.UserDTO
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,10 +21,7 @@ class UsersFirebaseDataSource(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     onSuccess(
                         snapshot.children.map {
-                            val user = it.getValue(UserDTO::class.java)
-                            user?.id = it.key.orEmpty()
-
-                            user ?: UserDTO()
+                            it.toUserDTO()
                         }
                     )
                 }

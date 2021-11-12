@@ -59,7 +59,7 @@ class AuthenticationFirebaseDataSource(
                 )
 
                 database.getReference(DatabaseConstants.USERS)
-                    .child(user.id)
+                    .child(user.id.orEmpty())
                     .setValue(user)
                     .addOnSuccessListener {
                         onSuccess(user)

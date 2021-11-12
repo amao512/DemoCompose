@@ -2,6 +2,7 @@ package com.aslnstbk.democompose.profile.data.firebase
 
 import com.aslnstbk.democompose.global.data.Constants.EMPTY
 import com.aslnstbk.democompose.global.data.firebase.DatabaseConstants
+import com.aslnstbk.democompose.global.presentation.utils.toUserDTO
 import com.aslnstbk.democompose.profile.data.models.UserDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -25,9 +26,7 @@ class ProfileFirebaseDataSource(
             .child(uid)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.getValue(UserDTO::class.java)?.let {
-                        onSuccess(it)
-                    }
+                    onSuccess(snapshot.toUserDTO())
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -44,15 +43,27 @@ class ProfileFirebaseDataSource(
         getUserByUid(
             uid = firebaseUser.uid,
             onSuccess = { user ->
-                firebaseDataSource.getReference(DatabaseConstants.USERS)
-                    .child(if (user.isDoctor) DatabaseConstants.USER_PATIENTS else DatabaseConstants.USER_DOCTORS)
-                    .setValue(userId)
-                    .addOnSuccessListener {
-                        onSuccess()
+                setDoctorOrPatient(
+                    parentUserId = firebaseUser.uid,
+                    userId = userId,
+                    listTitle = if (user.isDoctor) DatabaseConstants.USER_PATIENTS else DatabaseConstants.USER_DOCTORS,
+                    onSuccess = {
+                        setDoctorOrPatient(
+                            parentUserId = userId,
+                            userId = firebaseUser.uid,
+                            listTitle = if (user.isDoctor) DatabaseConstants.USER_DOCTORS else DatabaseConstants.USER_PATIENTS,
+                            onSuccess = {
+                                onSuccess()
+                            },
+                            onFailure = {
+                                onFailure(it)
+                            }
+                        )
+                    },
+                    onFailure = {
+                        onFailure(it)
                     }
-                    .addOnFailureListener {
-                        onFailure(it.localizedMessage ?: EMPTY)
-                    }
+                )
             },
             onFailure = {}
         )
@@ -65,5 +76,25 @@ class ProfileFirebaseDataSource(
         firebaseAuth.signOut().apply {
             onSuccess()
         }
+    }
+
+    private fun setDoctorOrPatient(
+        parentUserId: String,
+        userId: String,
+        listTitle: String,
+        onSuccess: () -> Unit,
+        onFailure: (String) -> Unit
+    ) {
+        firebaseDataSource.getReference(DatabaseConstants.USERS)
+            .child(parentUserId)
+            .child(listTitle)
+            .push()
+            .setValue(userId)
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener {
+                onFailure(it.localizedMessage ?: EMPTY)
+            }
     }
 }
